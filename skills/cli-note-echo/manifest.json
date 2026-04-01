@@ -1,0 +1,19 @@
+{
+  "name": "cli-note-echo",
+  "version": "0.1.0",
+  "entry": "handler.py",
+  "description": "Echo a short note from stdin; demonstrates JSON CLI contract for agents.",
+  "permissions": {
+    "filesystem": { "mode": "none" },
+    "network": { "enabled": false },
+    "process": { "enabled": false }
+  },
+  "inputSchema": {
+    "type": "object",
+    "properties": {
+      "message": { "type": "string", "minLength": 1, "maxLength": 8000 }
+    },
+    "required": ["message"],
+    "additionalProperties": false
+  }
+}
