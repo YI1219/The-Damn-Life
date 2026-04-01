@@ -1,0 +1,28 @@
+{
+  "name": "the-damn-life",
+  "version": "0.5.0",
+  "private": true,
+  "type": "module",
+  "workspaces": [
+    "host",
+    "mobile",
+    "shared",
+    "tools/improver"
+  ],
+  "scripts": {
+    "dev": "concurrently \"npm:dev:host\" \"npm:dev:mobile\"",
+    "dev:host": "npm --workspace host run dev",
+    "dev:mobile": "npm --workspace mobile run dev",
+    "build": "npm run build -w shared && npm run build -w host && npm run build -w mobile",
+    "check:gate-lite": "npm run build && npm --workspace host run gate:lite",
+    "check:gate": "npm run build && npm --workspace host run gate",
+    "check:gate:mobile": "npm run build -w mobile && npm --workspace host run gate:mobile",
+    "improver": "npm --workspace @damn-life/improver run start",
+    "smoke:e2e": "npm --workspace host run smoke:e2e",
+    "smoke:e2e-success": "npm --workspace host run smoke:e2e-success",
+    "smoke:strict": "npm --workspace host run smoke:strict"
+  },
+  "devDependencies": {
+    "concurrently": "^9.1.2"
+  }
+}

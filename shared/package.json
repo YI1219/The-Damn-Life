@@ -1,0 +1,13 @@
+{
+  "name": "@damn-life/shared",
+  "version": "0.5.0",
+  "type": "module",
+  "main": "dist/contracts.js",
+  "types": "dist/contracts.d.ts",
+  "scripts": {
+    "build": "tsc -p tsconfig.json"
+  },
+  "devDependencies": {
+    "typescript": "^5.8.2"
+  }
+}

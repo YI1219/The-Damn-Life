@@ -1,0 +1,28 @@
+{
+  "name": "@damn-life/host",
+  "version": "0.5.0",
+  "type": "module",
+  "scripts": {
+    "dev": "tsx src/server.ts",
+    "build": "tsc -p tsconfig.json",
+    "gate": "tsx src/weeklyGate.ts && tsx src/redTeamGate.ts && tsx src/kernelMetricsGate.ts && tsx src/auditChainVerify.ts",
+    "gate:lite": "tsx src/redTeamGate.ts && tsx src/kernelMetricsGate.ts",
+    "gate:mobile": "tsx src/mobileMetricsGate.ts",
+    "verify:audit": "tsx src/auditChainVerify.ts",
+    "seed:demo": "tsx src/demoSeed.ts",
+    "smoke:e2e": "tsx src/e2eSmoke.ts",
+    "smoke:e2e-success": "tsx src/e2eSuccess.ts",
+    "smoke:strict": "tsx src/runStrictSmoke.ts"
+  },
+  "dependencies": {
+    "better-sqlite3": "^11.9.0",
+    "ws": "^8.18.1"
+  },
+  "devDependencies": {
+    "@types/better-sqlite3": "^7.6.12",
+    "@types/node": "^22.14.1",
+    "@types/ws": "^8.18.1",
+    "tsx": "^4.19.3",
+    "typescript": "^5.8.2"
+  }
+}

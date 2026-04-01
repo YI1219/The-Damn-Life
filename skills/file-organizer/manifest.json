@@ -1,0 +1,27 @@
+{
+  "name": "file-organizer",
+  "version": "0.1.0",
+  "entry": "handler.py",
+  "description": "Organize files in a target directory by extension category.",
+  "permissions": {
+    "filesystem": {
+      "mode": "readwrite",
+      "allowDelete": false,
+      "recursive": false
+    },
+    "network": {
+      "enabled": false
+    },
+    "process": {
+      "enabled": false
+    }
+  },
+  "inputSchema": {
+    "type": "object",
+    "properties": {
+      "targetDir": { "type": "string", "minLength": 1 }
+    },
+    "required": ["targetDir"],
+    "additionalProperties": false
+  }
+}

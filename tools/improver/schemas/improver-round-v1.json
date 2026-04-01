@@ -1,0 +1,61 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://damn-life.local/schemas/improver-round-v1.json",
+  "title": "Improver multi-agent JSON rounds",
+  "oneOf": [
+    {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["schemaVersion", "role", "summary", "targetFiles", "steps"],
+      "properties": {
+        "schemaVersion": { "const": 1 },
+        "role": { "const": "planner" },
+        "summary": { "type": "string", "minLength": 1 },
+        "targetFiles": {
+          "type": "array",
+          "items": { "type": "string", "minLength": 1 },
+          "maxItems": 20
+        },
+        "steps": {
+          "type": "array",
+          "items": { "type": "string" },
+          "maxItems": 30
+        }
+      }
+    },
+    {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["schemaVersion", "role", "edits"],
+      "properties": {
+        "schemaVersion": { "const": 1 },
+        "role": { "const": "implementer" },
+        "edits": {
+          "type": "array",
+          "maxItems": 25,
+          "items": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": ["path", "content"],
+            "properties": {
+              "path": { "type": "string", "minLength": 1 },
+              "content": { "type": "string" }
+            }
+          }
+        }
+      }
+    },
+    {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["schemaVersion", "role", "verdict", "issues", "summary"],
+      "properties": {
+        "schemaVersion": { "const": 1 },
+        "role": { "const": "critic" },
+        "verdict": { "type": "string", "enum": ["approve", "revise"] },
+        "issues": { "type": "array", "items": { "type": "string" } },
+        "summary": { "type": "string" }
+      }
+    }
+  ]
+}
