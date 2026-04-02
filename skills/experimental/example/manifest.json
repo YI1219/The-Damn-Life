@@ -1,0 +1,30 @@
+{
+  "name": "word-counter",
+  "version": "0.1.0-experimental",
+  "description": "实验性技能示例 — 统计文本的字数、行数与字符数",
+  "author": "The Damn Life",
+  "entry": "main.py",
+  "experimental": true,
+  "permissions": [],
+  "inputs": {
+    "text": {
+      "type": "string",
+      "required": true,
+      "description": "要统计的文本内容"
+    }
+  },
+  "outputs": {
+    "chars": {
+      "type": "integer",
+      "description": "字符数"
+    },
+    "words": {
+      "type": "integer",
+      "description": "词数（按空白分割）"
+    },
+    "lines": {
+      "type": "integer",
+      "description": "行数"
+    }
+  }
+}

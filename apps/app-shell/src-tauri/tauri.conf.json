@@ -1,0 +1,21 @@
+{
+  "$schema": "https://raw.githubusercontent.com/nicoverbruggen/tauri-v2-schema/main/schema.json",
+  "productName": "The Damn Life",
+  "identifier": "com.the-damn-life.desktop",
+  "version": "0.0.1",
+  "build": {
+    "frontendDist": "../dist",
+    "devUrl": "http://localhost:5173",
+    "beforeDevCommand": "pnpm dev",
+    "beforeBuildCommand": "pnpm build"
+  },
+  "app": {
+    "windows": [
+      {
+        "title": "The Damn Life",
+        "width": 1024,
+        "height": 768
+      }
+    ]
+  }
+}

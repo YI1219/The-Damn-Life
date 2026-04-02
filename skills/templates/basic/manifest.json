@@ -1,0 +1,21 @@
+{
+  "name": "{{skill_name}}",
+  "version": "0.1.0",
+  "description": "{{description}}",
+  "author": "{{author}}",
+  "entry": "main.py",
+  "permissions": [],
+  "inputs": {
+    "{{input_name}}": {
+      "type": "string",
+      "required": true,
+      "description": "{{input_description}}"
+    }
+  },
+  "outputs": {
+    "{{output_name}}": {
+      "type": "string",
+      "description": "{{output_description}}"
+    }
+  }
+}

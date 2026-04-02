@@ -1,0 +1,21 @@
+node_modules
+dist
+build
+coverage
+.tauri
+.turbo
+output
+out
+.next
+.vite
+pnpm-lock.yaml
+package-lock.json
+yarn.lock
+
+# tauri
+src-tauri/target
+src-tauri/gen
+
+# misc
+*.min.js
+*.log

@@ -1,0 +1,12 @@
+[package]
+name = "the-damn-life-desktop"
+version = "0.0.1"
+edition = "2021"
+
+[dependencies]
+tauri = { version = "2", features = [] }
+tauri-build = { version = "2", features = [] }
+
+[[bin]]
+name = "the-damn-life-desktop"
+path = "src/main.rs"

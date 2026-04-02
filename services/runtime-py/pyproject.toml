@@ -1,0 +1,9 @@
+[project]
+name = "runtime-py"
+version = "0.0.1"
+description = "AI runtime and skill orchestration service"
+requires-python = ">=3.11"
+
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"

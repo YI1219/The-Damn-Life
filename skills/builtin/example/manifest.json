@@ -1,0 +1,22 @@
+{
+  "name": "hello-world",
+  "version": "0.1.0",
+  "description": "最小可运行的内置技能示例 — 接收用户名，返回问候语",
+  "author": "The Damn Life",
+  "entry": "main.py",
+  "permissions": [],
+  "inputs": {
+    "user_name": {
+      "type": "string",
+      "required": false,
+      "default": "World",
+      "description": "要问候的用户名"
+    }
+  },
+  "outputs": {
+    "greeting": {
+      "type": "string",
+      "description": "生成的问候语"
+    }
+  }
+}
