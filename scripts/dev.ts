@@ -24,44 +24,64 @@ function printUsage(): void {
 }
 
 function start(command: string, commandArgs: string[], cwd = process.cwd()): void {
-  const child = spawn(command, commandArgs, { cwd, stdio: 'inherit' })
-  child.on('exit', (code: number | null) => process.exit(code ?? 0))
+  const child = spawn(command, commandArgs, {
+    cwd,
+    stdio: 'inherit',
+    detached: true,
+  })
+
+  const cleanup = () => {
+    try {
+      process.kill(-child.pid!, 'SIGTERM')
+    } catch {
+      // process group already exited
+    }
+  }
+
+  process.on('SIGINT', cleanup)
+  process.on('SIGTERM', cleanup)
+  process.on('exit', cleanup)
+
+  child.on('exit', (code: number | null) => {
+    process.removeListener('SIGINT', cleanup)
+    process.removeListener('SIGTERM', cleanup)
+    process.removeListener('exit', cleanup)
+    process.exit(code ?? 0)
+  })
 }
 
 if (args.length === 0) {
   process.stdout.write('\nStarting all dev processes...\n\n')
   start('pnpm', ['exec', 'turbo', 'run', 'dev', '--parallel'])
-}
-
-if (args.includes('-h') || args.includes('--help')) {
+} else if (args.includes('-h') || args.includes('--help')) {
   printUsage()
   process.exit(0)
+} else {
+  let target: string | undefined
+  if (args.length === 1 && !args[0]?.startsWith('-')) {
+    target = args[0]
+  }
+
+  if (!target) {
+    printUsage()
+    process.exit(1)
+  }
+
+  const projectName = target
+  const project = projects[projectName]
+  if (!project) {
+    console.error(`Unknown project: ${projectName}`)
+    printUsage()
+    process.exit(1)
+  }
+
+  const cwd = resolve(process.cwd(), project.cwd)
+  if (!existsSync(cwd)) {
+    console.error(`Directory not found: ${project.cwd}`)
+    process.exit(1)
+  }
+
+  process.stdout.write(`\nStarting ${projectName} in ${project.cwd}...\n\n`)
+
+  start(project.cmd, project.args, cwd)
 }
-
-let target: string | undefined
-if (args.length === 1 && !args[0]?.startsWith('-')) {
-  target = args[0]
-}
-
-if (!target) {
-  printUsage()
-  process.exit(1)
-}
-
-const projectName = target
-const project = projects[projectName]
-if (!project) {
-  console.error(`Unknown project: ${projectName}`)
-  printUsage()
-  process.exit(1)
-}
-
-const cwd = resolve(process.cwd(), project.cwd)
-if (!existsSync(cwd)) {
-  console.error(`Directory not found: ${project.cwd}`)
-  process.exit(1)
-}
-
-process.stdout.write(`\nStarting ${projectName} in ${project.cwd}...\n\n`)
-
-start(project.cmd, project.args, cwd)
