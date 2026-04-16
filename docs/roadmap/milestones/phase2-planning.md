@@ -11,6 +11,9 @@
 
 ## 建议里程碑（草案）
 
+> 进度记录约定：用 checklist 标注 **Done / In progress / Todo**。  
+> 每个里程碑至少应有一个“脚本/步骤可复现”的验收点（优先 CI/脚本，其次手工 UI）。
+
 ### M2.1 多宿主注册（最小）
 
 - **交付**：Host 有稳定 identity（不等于用户概念），可被远端识别/重连
@@ -19,23 +22,44 @@
 - **实现提示（最小侵入）**：优先复用 `SessionJoinPayload.capabilities` 传递 `hostId=<uuid>` 等“可选能力/标识”，避免立即扩大契约；当需要强类型字段时再由 Contracts 介入。
 - **Relay 最小支持**：允许 `role=host:<key>` / `role=remote:<key>`（同 session 下按 `<key>` 分桶配对），以便并存多对 Host/Remote 而不需要修改消息载荷语义。
 
+- **Checklist**
+  - [x] **Done**：Host 本地稳定 `hostId`（不引入用户概念）
+  - [x] **Done**：`session.join.payload.capabilities` 透传 `hostId=<uuid>`（次级诊断）
+  - [x] **Done**：Relay 支持 `role=host:<key>` / `role=remote:<key>` 分桶并存
+  - [x] **Done**：Host/Remote UI 支持配置 `roleKey`（空值兼容旧行为）
+  - [x] **Done**：E2E 覆盖两对并存 + 双 `task.completed` 断言（`pnpm e2e`）
+
 ### M2.2 抽象工作区（最小）
 
 - **交付**：`workspaceId` 成为贯穿的一级上下文字段（契约不破坏兼容）
 - **验证**：Remote 的任务与事件能按 `workspaceId` 过滤/聚合
 
+- **Checklist**
+  - [x] **Done**：E2E 覆盖 `workspaceId` 贯穿（接入断言）
+  - [x] **Done**：Remote UI 显示 active `workspaceId` 并在任务/活动中携带
+  - [ ] **In progress**：Remote UI 的 History / Activity 支持按 `workspaceId` 聚合/过滤（明确入口与默认策略）
+
 ### M2.3 `sync-service` 联动（只读先行）
 
 - **交付**：事件/审计可被同步服务订阅并提供只读查询（先不做冲突）
 - **验证**：离线后回到在线，Remote 能看到历史 audit/task 轨迹
-- **当前进度（Lead，2026-04-15）**：
-  - ✅ `services/sync-service`：Dev MVP 已提供 `POST /v1/events` + `GET /v1/events`（内存存储）+ 单测；CI 已纳入该单测步骤（见 `.github/workflows/ci.yml`）。
-  - Next：客户端 mirror（`app-shell` / `web-console` 侧 **可选**上报 + Remote 侧 History 拉取）。
+
+- **Checklist**
+  - [x] **Done**：`services/sync-service` Dev MVP：`POST /v1/events` + `GET /v1/events`（内存存储）+ 单测
+  - [x] **Done**：CI 纳入 `sync-service` 单测（见 `.github/workflows/ci.yml`）
+  - [x] **Done**：Host/Remote 侧具备 **可选** mirror（best-effort，不影响主链路）
+  - [x] **Done**：Remote 侧具备 History 读取能力（`GET /v1/events?workspaceId=...`）
+  - [ ] **Todo**：补一个“离线回线”验收：断网期间不 mirror，恢复后能拉回历史（脚本化优先）
 
 ### M2.4 协作流 UI（骨架）
 
 - **交付**：UI 以“工作区内的任务与状态流”展示多宿主分工，不以设备表为中心
 - **验证**：同一工作区下可看到来自不同 host 的事件来源（抽象化呈现）
+
+- **Checklist**
+  - [ ] **Todo**：工作区时间线（按事件类型/来源分组，非设备表）
+  - [ ] **Todo**：同一工作区下多宿主来源可辨识（次级标识即可：hostId/roleKey/source）
+  - [ ] **Todo**：最小“协作叙事”页面信息架构（不影响现有 task-first 主流程）
 
 ## 风险与门控
 
