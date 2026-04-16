@@ -66,3 +66,6 @@
 - **协议漂移**：任何跨端字段变更必须先改 `packages/event-contracts` + `docs/protocols/`，再改实现
 - **范围控制**：阶段 2 默认 **不**引入“设备表主叙事”；多宿主信息以工作区任务流/次级诊断展示为主
 
+## 下一步
+
+- 阶段 3（稳定 / GA）占位与拆解见 [`phase3-planning.md`](phase3-planning.md)（对齐 `overview.md` 表）。

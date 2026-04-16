@@ -35,7 +35,8 @@
 ## 📌 当前文档
 
 - [`overview.md`](overview.md) — 产品方向与阶段占位（多宿主抽象呈现、随身入口、跨设备协作）
-- [`milestones/phase2-planning.md`](milestones/phase2-planning.md) — 阶段 2（扩展）里程碑占位（仅规划）
+- [`milestones/phase2-planning.md`](milestones/phase2-planning.md) — 阶段 2（扩展）里程碑与验收 checklist
+- [`milestones/phase3-planning.md`](milestones/phase3-planning.md) — 阶段 3（稳定 / GA）里程碑占位
 - [`backlog.md`](backlog.md) — 技术债 & 待定项
 
 ## 📁 建议结构
