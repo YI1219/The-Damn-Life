@@ -1,8 +1,7 @@
 {
   "extends": "@the-damn-life/config/tsconfig.react.json",
   "compilerOptions": {
-    "outDir": "dist",
-    "rootDir": "src"
+    "outDir": "dist"
   },
-  "include": ["src"]
+  "include": ["src", "platform/web"]
 }

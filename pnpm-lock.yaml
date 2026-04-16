@@ -84,6 +84,12 @@ importers:
       '@the-damn-life/event-contracts':
         specifier: workspace:*
         version: link:../../packages/event-contracts
+      react:
+        specifier: ^19.0.0
+        version: 19.2.4
+      react-dom:
+        specifier: ^19.0.0
+        version: 19.2.4(react@19.2.4)
     devDependencies:
       '@tauri-apps/cli':
         specifier: ^2.0.0
@@ -91,6 +97,15 @@ importers:
       '@the-damn-life/config':
         specifier: workspace:*
         version: link:../../packages/config
+      '@types/react':
+        specifier: ^19.0.0
+        version: 19.2.14
+      '@types/react-dom':
+        specifier: ^19.0.0
+        version: 19.2.3(@types/react@19.2.14)
+      '@vitejs/plugin-react':
+        specifier: ^4.4.0
+        version: 4.7.0(vite@6.4.1(@types/node@25.5.0)(tsx@4.21.0))
       vite:
         specifier: ^6.0.0
         version: 6.4.1(@types/node@25.5.0)(tsx@4.21.0)

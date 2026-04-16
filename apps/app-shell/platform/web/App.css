@@ -1,0 +1,209 @@
+:root {
+  /* 主色 */
+  --color-primary: #0ea5e9;
+  --color-primary-hover: #0284c7;
+
+  /* 危险 */
+  --color-danger: #b91c1c;
+  --color-danger-bg: #fef2f2;
+
+  /* 文本 */
+  --color-text: #111;
+  --color-text-muted: #444;
+  --color-text-on-primary: #fff;
+
+  /* 背景 */
+  --color-bg: #fff;
+  --color-bg-subtle: #f6f7f9;
+  --color-bg-overlay: rgba(0, 0, 0, 0.55);
+
+  /* 日志终端 */
+  --color-log-bg: #111;
+  --color-log-text: #e8e8e8;
+
+  /* 边框 */
+  --color-border: #e5e7eb;
+
+  /* 间距 */
+  --space-1: 0.25rem;
+  --space-2: 0.5rem;
+  --space-3: 0.75rem;
+  --space-4: 1rem;
+  --space-5: 1.25rem;
+}
+
+.host-panel {
+  font-family:
+    system-ui,
+    -apple-system,
+    BlinkMacSystemFont,
+    'Segoe UI',
+    sans-serif;
+  padding: var(--space-4) var(--space-5);
+  max-width: 52rem;
+}
+
+h1 {
+  font-size: 1.25rem;
+  font-weight: 650;
+  margin: 0 0 var(--space-4);
+}
+
+h2 {
+  font-size: 1rem;
+  font-weight: 650;
+  margin: 0 0 var(--space-3);
+}
+
+button {
+  padding: 0.45rem 0.75rem;
+  border-radius: 6px;
+  border: 1px solid var(--color-border);
+  background: var(--color-bg);
+  color: var(--color-text);
+  cursor: pointer;
+  font-family: inherit;
+  font-size: inherit;
+}
+button:disabled {
+  opacity: 0.45;
+  cursor: not-allowed;
+}
+button.primary {
+  background: var(--color-primary);
+  color: var(--color-text-on-primary);
+  border-color: var(--color-primary);
+  border-radius: 10px;
+}
+button.primary:hover:not(:disabled) {
+  background: var(--color-primary-hover);
+  border-color: var(--color-primary-hover);
+}
+button.danger {
+  background: var(--color-danger);
+  color: var(--color-text-on-primary);
+  border-color: var(--color-danger);
+  border-radius: 10px;
+}
+
+.hint {
+  color: var(--color-text-muted);
+  font-size: 0.9rem;
+}
+.hint strong {
+  font-weight: 650;
+}
+.hint code {
+  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+  font-size: 0.92em;
+}
+.hint.danger {
+  color: var(--color-danger);
+}
+
+label {
+  display: flex;
+  flex-direction: column;
+  gap: 0.35rem;
+  margin: 1rem 0;
+  font-size: 0.9rem;
+  color: var(--color-text-muted);
+}
+
+input[type='text'],
+input[type='url'],
+input[type='number'] {
+  padding: 0.4rem 0.5rem;
+  border: 1px solid var(--color-border);
+  border-radius: 6px;
+  font-family: inherit;
+  font-size: inherit;
+  background: var(--color-bg);
+  color: var(--color-text);
+}
+input:focus {
+  outline: 2px solid var(--color-primary);
+  outline-offset: 1px;
+  border-color: transparent;
+}
+.inline-check {
+  flex-direction: row;
+  align-items: center;
+  gap: 0.5rem;
+}
+.inline-check input {
+  width: auto;
+}
+
+.row {
+  display: flex;
+  gap: 0.5rem;
+  margin-bottom: 0.75rem;
+}
+
+.log {
+  background: var(--color-log-bg);
+  color: var(--color-log-text);
+  padding: var(--space-3);
+  min-height: 12rem;
+  max-height: 24rem;
+  overflow: auto;
+  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+  font-size: 0.8rem;
+  border-radius: 6px;
+  white-space: pre-wrap;
+  word-break: break-all;
+}
+
+/* ConfirmModal */
+.tdl-modal-overlay {
+  position: fixed;
+  inset: 0;
+  background: var(--color-bg-overlay);
+  display: grid;
+  place-items: center;
+  z-index: 9999;
+}
+.tdl-modal {
+  background: var(--color-bg);
+  width: min(44rem, 92vw);
+  border-radius: 12px;
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.35);
+  padding: var(--space-4);
+}
+.tdl-modal-title {
+  font-weight: 650;
+  margin-bottom: var(--space-2);
+}
+.tdl-modal-message {
+  white-space: pre-wrap;
+  background: var(--color-bg-subtle);
+  border-radius: 10px;
+  padding: var(--space-3);
+  max-height: 40vh;
+  overflow: auto;
+}
+.tdl-modal-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: var(--space-2);
+  margin-top: 0.8rem;
+}
+.tdl-modal-actions button {
+  padding: 0.45rem 0.75rem;
+  border-radius: 6px;
+  border: 1px solid var(--color-border);
+  background: var(--color-bg);
+  color: var(--color-text);
+  cursor: pointer;
+}
+.tdl-modal-actions .primary {
+  background: var(--color-primary);
+  color: var(--color-text-on-primary);
+  border-color: var(--color-primary);
+  border-radius: 10px;
+}
+.tdl-modal-actions .primary:hover {
+  background: var(--color-primary-hover);
+  border-color: var(--color-primary-hover);
+}
