@@ -68,6 +68,7 @@ root.innerHTML = `
     <label>Sync base URL（默认端口 9797）
       <input id="sync-base-url" type="text" size="72" autocomplete="off" placeholder="http://127.0.0.1:9797" />
     </label>
+    <p class="hint" id="sync-mirror-health"></p>
     <div class="row">
       <button id="btn-connect" type="button">连接 Relay</button>
       <button id="btn-disconnect" type="button" disabled>断开</button>
@@ -80,6 +81,9 @@ const style = document.createElement('style')
 style.textContent = `
   .host-panel { font-family: system-ui, sans-serif; padding: 1rem 1.25rem; max-width: 52rem; }
   .hint { color: #444; font-size: 0.9rem; }
+  .hint strong { font-weight: 650; }
+  .hint code { font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace; font-size: 0.92em; }
+  .hint.danger { color: #b91c1c; }
   label { display: flex; flex-direction: column; gap: 0.35rem; margin: 1rem 0; }
   input { padding: 0.4rem 0.5rem; }
   .inline-check { flex-direction: row; align-items: center; gap: 0.5rem; }
@@ -122,10 +126,35 @@ syncBaseUrlInput.value =
     : DEFAULT_SYNC_BASE_URL
 const btnConnect = document.querySelector<HTMLButtonElement>('#btn-connect')!
 const btnDisconnect = document.querySelector<HTMLButtonElement>('#btn-disconnect')!
+const syncMirrorHealthEl =
+  document.querySelector<HTMLParagraphElement>('#sync-mirror-health')!
 
 function log(line: string): void {
   logEl.textContent += `${line}\n`
   logEl.scrollTop = logEl.scrollHeight
+}
+
+function setSyncMirrorHealth(h: {
+  lastOkAt: string | null
+  lastError: string | null
+}): void {
+  if (!syncMirrorEnabledInput.checked) {
+    syncMirrorHealthEl.textContent = ''
+    syncMirrorHealthEl.classList.remove('danger')
+    return
+  }
+  if (h.lastError) {
+    syncMirrorHealthEl.classList.add('danger')
+    syncMirrorHealthEl.innerHTML = `<strong>Mirror gap:</strong> ${h.lastError}（Relay / Runtime 主链路不受影响）`
+    return
+  }
+  syncMirrorHealthEl.classList.remove('danger')
+  if (h.lastOkAt) {
+    syncMirrorHealthEl.innerHTML = `Last mirror POST ok: <code>${h.lastOkAt}</code>`
+  } else {
+    syncMirrorHealthEl.textContent =
+      'No mirror POST yet — connect and emit task/audit/session wire first.'
+  }
 }
 
 const permissionPolicy = createConfirmPermissionPolicy((prompt) =>
@@ -149,6 +178,7 @@ syncMirrorEnabledInput.addEventListener('change', () => {
   } catch {
     /* ignore */
   }
+  setSyncMirrorHealth({ lastOkAt: null, lastError: null })
 })
 syncBaseUrlInput.addEventListener('change', () => {
   try {
@@ -247,12 +277,15 @@ btnConnect.addEventListener('click', () => {
     enabled: syncMirrorEnabledInput.checked,
     baseUrl: syncBaseUrlInput.value.trim() || DEFAULT_SYNC_BASE_URL,
   }
+  setSyncMirrorHealth({ lastOkAt: null, lastError: null })
 
   session?.disconnect()
   session = new RelayHostSession(permissionPolicy, {
     mirrorEnvelope: (m) =>
       mirrorWireEnvelopeBestEffort(syncMirrorCfgFinal, m, {
         sessionId: m.sessionId ?? session?.activeSessionId,
+      }, {
+        onHealth: (h) => setSyncMirrorHealth(h),
       }),
     onSessionJoined: (sid, ws) =>
       log(
@@ -270,6 +303,8 @@ btnConnect.addEventListener('click', () => {
         for (const out of outs) {
           mirrorWireEnvelopeBestEffort(syncMirrorCfgFinal, out, {
             sessionId: out.sessionId ?? session?.activeSessionId,
+          }, {
+            onHealth: (h) => setSyncMirrorHealth(h),
           })
           session?.sendToRelay(out)
         }
@@ -299,5 +334,6 @@ btnDisconnect.addEventListener('click', () => {
   session?.disconnect()
   session = null
   setConnected(false)
+  setSyncMirrorHealth({ lastOkAt: null, lastError: null })
   log('disconnected')
 })
