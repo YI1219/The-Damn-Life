@@ -46,6 +46,42 @@ body {
   min-height: 100vh;
 }
 
+.console-ia-rail {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: 0.35rem 1rem;
+  padding: 0.45rem 1.25rem;
+  background: var(--surface);
+  border-bottom: 1px solid var(--border);
+  font-size: 0.8rem;
+  color: var(--muted);
+}
+
+.console-ia-rail strong {
+  color: var(--text);
+  font-weight: 600;
+}
+
+.console-ia-rail nav {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.35rem 0.85rem;
+}
+
+.console-ia-rail a {
+  color: var(--accent);
+  text-decoration: none;
+}
+
+.console-ia-rail a:hover {
+  text-decoration: underline;
+}
+
+.console-main section {
+  scroll-margin-top: 0.5rem;
+}
+
 .console-main {
   display: grid;
   grid-template-columns:

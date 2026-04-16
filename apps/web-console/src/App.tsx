@@ -304,7 +304,7 @@ export function App() {
         <div>
           <strong>Remote console</strong>
           <span style={{ color: 'var(--muted)', marginLeft: '0.75rem' }}>
-            Workspace · task · session
+            Task-first · workspace collaboration on the right
           </span>
         </div>
         <div
@@ -323,8 +323,24 @@ export function App() {
         </div>
       </header>
 
+      <div className="console-ia-rail">
+        <span>
+          <strong>Flow</strong>: pair relay → run tasks (center) → read the{' '}
+          <strong>workspace story</strong> (stream + mirror); still no device
+          table.
+        </span>
+        <nav aria-label="In-page sections">
+          <a href="#tdl-session">Session</a>
+          <a href="#tdl-tasks">Tasks</a>
+          <a href="#tdl-workspace-stream">Stream</a>
+          <a href="#tdl-mirror-history">Mirror</a>
+        </nav>
+      </div>
+
       <main className="console-main" style={{ flex: 1 }}>
         <section
+          id="tdl-session"
+          aria-labelledby="tdl-session-title"
           style={{
             background: 'var(--bg)',
             padding: '1rem',
@@ -333,7 +349,19 @@ export function App() {
             gap: '0.75rem',
           }}
         >
-          <h2 style={{ margin: 0, fontSize: '1rem' }}>Session</h2>
+          <div
+            style={{
+              fontSize: '0.65rem',
+              letterSpacing: '0.06em',
+              textTransform: 'uppercase',
+              color: 'var(--muted)',
+            }}
+          >
+            Transport · pair with host
+          </div>
+          <h2 id="tdl-session-title" style={{ margin: 0, fontSize: '1rem' }}>
+            Session
+          </h2>
           <p style={{ margin: 0, fontSize: '0.85rem', color: 'var(--muted)' }}>
             On connect we open{' '}
             <code>{'?session=<id>&role=remote'}</code> — use the same{' '}
@@ -537,6 +565,8 @@ export function App() {
         </section>
 
         <section
+          id="tdl-tasks"
+          aria-labelledby="tdl-tasks-title"
           style={{
             background: 'var(--bg)',
             padding: '1rem',
@@ -546,7 +576,19 @@ export function App() {
             minWidth: 0,
           }}
         >
-          <h2 style={{ margin: 0, fontSize: '1rem' }}>Tasks</h2>
+          <div
+            style={{
+              fontSize: '0.65rem',
+              letterSpacing: '0.06em',
+              textTransform: 'uppercase',
+              color: 'var(--muted)',
+            }}
+          >
+            Primary · your work
+          </div>
+          <h2 id="tdl-tasks-title" style={{ margin: 0, fontSize: '1rem' }}>
+            Tasks
+          </h2>
           <form
             onSubmit={(e) => {
               e.preventDefault()
@@ -657,6 +699,8 @@ export function App() {
         </section>
 
         <section
+          id="tdl-workspace-stream"
+          aria-labelledby="tdl-workspace-stream-title"
           style={{
             background: 'var(--bg)',
             padding: '1rem',
@@ -666,7 +710,22 @@ export function App() {
             minWidth: 0,
           }}
         >
-          <h2 style={{ margin: 0, fontSize: '1rem' }}>Workspace stream</h2>
+          <div
+            style={{
+              fontSize: '0.65rem',
+              letterSpacing: '0.06em',
+              textTransform: 'uppercase',
+              color: 'var(--muted)',
+            }}
+          >
+            Collaboration · shared timeline
+          </div>
+          <h2
+            id="tdl-workspace-stream-title"
+            style={{ margin: 0, fontSize: '1rem' }}
+          >
+            Workspace stream
+          </h2>
           <p style={{ margin: 0, fontSize: '0.8rem', color: 'var(--muted)' }}>
             Merges <strong>live</strong> events from this console with{' '}
             <strong>mirror</strong> rows from sync-service (multi-writer). Task /
@@ -775,6 +834,8 @@ export function App() {
         </section>
 
         <section
+          id="tdl-mirror-history"
+          aria-labelledby="tdl-mirror-history-title"
           style={{
             background: 'var(--bg)',
             padding: '1rem',
@@ -784,7 +845,22 @@ export function App() {
             minWidth: 0,
           }}
         >
-          <h2 style={{ margin: 0, fontSize: '1rem' }}>History (read-only)</h2>
+          <div
+            style={{
+              fontSize: '0.65rem',
+              letterSpacing: '0.06em',
+              textTransform: 'uppercase',
+              color: 'var(--muted)',
+            }}
+          >
+            Diagnostics · raw mirror
+          </div>
+          <h2
+            id="tdl-mirror-history-title"
+            style={{ margin: 0, fontSize: '1rem' }}
+          >
+            History (read-only)
+          </h2>
           <p style={{ margin: 0, fontSize: '0.8rem', color: 'var(--muted)' }}>
             <code>GET /v1/events?workspaceId=…</code> — same{' '}
             <strong>workspaceId</strong> filter as mirror writes (joined id wins,

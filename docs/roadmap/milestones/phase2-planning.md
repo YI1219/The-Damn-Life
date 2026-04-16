@@ -59,7 +59,7 @@
 - **Checklist**
   - [x] **Done**：工作区时间线（`web-console` **Workspace stream**：合并 live + sync mirror，按时间排序）
   - [x] **Done**：同一工作区下多宿主来源可辨识（Workspace stream：`host` / `peer` 自 envelope payload；本 tab的 relay **pair**（URL `roleKey`）在栏头说明，因 relay 不写入载荷）
-  - [ ] **Todo**：最小“协作叙事”页面信息架构（不影响现有 task-first 主流程）
+  - [x] **Done**：最小“协作叙事”页面信息架构（`console-ia-rail` 流程说明 + 区内锚点；四栏 eyebrow：Transport / Primary / Collaboration / Diagnostics；不改 grid 与任务主路径）
 
 ## 风险与门控
 
