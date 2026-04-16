@@ -41,7 +41,8 @@
     "format": "prettier --write .",
     "clean": "tsx scripts/clean.ts",
     "bootstrap": "tsx scripts/bootstrap.ts",
-    "e2e": "tsx scripts/e2e-smoke.ts"
+    "e2e": "tsx scripts/e2e-smoke.ts",
+    "sync:smoke": "tsx scripts/sync-history-smoke.ts"
   },
   "devDependencies": {
     "@eslint/js": "^10.0.1",

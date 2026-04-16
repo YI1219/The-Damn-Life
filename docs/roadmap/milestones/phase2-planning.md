@@ -49,7 +49,7 @@
   - [x] **Done**：CI 纳入 `sync-service` 单测（见 `.github/workflows/ci.yml`）
   - [x] **Done**：Host/Remote 侧具备 **可选** mirror（best-effort，不影响主链路）
   - [x] **Done**：Remote 侧具备 History 读取能力（`GET /v1/events?workspaceId=...`）
-  - [ ] **Todo**：补一个“离线回线”验收：断网期间不 mirror，恢复后能拉回历史（脚本化优先）
+  - [x] **Done**：脚本化“离线/回线”验收（`pnpm sync:smoke`）：模拟客户端离线导致 mirror 失败不影响流程；回线后可查询到此前已镜像的历史（内存存储不涵盖“服务重启后仍保留历史”）
 
 ### M2.4 协作流 UI（骨架）
 

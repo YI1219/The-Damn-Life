@@ -25,6 +25,8 @@ jobs:
       - run: pnpm build
       - name: sync-service (unit)
         run: pnpm --filter @the-damn-life/sync-service test
+      - name: sync-service (history smoke)
+        run: pnpm sync:smoke
       - name: relay-go (go test)
         working-directory: services/relay-go
         run: go test ./...
