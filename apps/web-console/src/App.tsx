@@ -51,6 +51,8 @@ export function App() {
   const [historyRows, setHistoryRows] = useState<StoredEventRow[]>([])
   const [historyError, setHistoryError] = useState<string | null>(null)
   const [historyLoading, setHistoryLoading] = useState(false)
+  /** Empty → use active context (`joined` wins, else Session field). Non-empty → `GET /v1/events` only. */
+  const [historyWorkspaceOverride, setHistoryWorkspaceOverride] = useState('')
 
   const [relayBase, setRelayBase] = useState(() => {
     if (typeof window === 'undefined') return defaultRelayBase
@@ -141,8 +143,14 @@ export function App() {
     return fromJoin || fromField || ''
   }, [activeWorkspaceId, workspaceId])
 
+  const workspaceIdForSyncQuery = useMemo(() => {
+    const o = historyWorkspaceOverride.trim()
+    if (o) return o
+    return effectiveWorkspaceForSync
+  }, [historyWorkspaceOverride, effectiveWorkspaceForSync])
+
   const refreshHistory = useCallback(async () => {
-    const wid = effectiveWorkspaceForSync
+    const wid = workspaceIdForSyncQuery.trim()
     const base = syncBase.trim()
     if (!wid || !base) {
       setHistoryError('Workspace id and sync base URL are required.')
@@ -158,13 +166,13 @@ export function App() {
     } finally {
       setHistoryLoading(false)
     }
-  }, [effectiveWorkspaceForSync, syncBase])
+  }, [workspaceIdForSyncQuery, syncBase])
 
   useEffect(() => {
-    if (phase === 'ready' && effectiveWorkspaceForSync && syncBase.trim()) {
+    if (phase === 'ready' && workspaceIdForSyncQuery.trim() && syncBase.trim()) {
       void refreshHistory()
     }
-  }, [effectiveWorkspaceForSync, phase, refreshHistory, syncBase])
+  }, [workspaceIdForSyncQuery, phase, refreshHistory, syncBase])
 
   useEffect(() => {
     try {
@@ -235,6 +243,7 @@ export function App() {
       source?: string
       hostId?: string
       clientRole?: string
+      workspaceId?: string
     }
     const live: Row[] = activity.map((a) => ({
       key: `live-${a.id}`,
@@ -244,6 +253,7 @@ export function App() {
       title: a.summary,
       body: a.payloadPreview,
       source: 'web-console',
+      ...(a.workspaceId ? { workspaceId: a.workspaceId } : {}),
       ...(a.hostId ? { hostId: a.hostId } : {}),
       ...(a.clientRole ? { clientRole: a.clientRole } : {}),
     }))
@@ -255,6 +265,7 @@ export function App() {
         lane: 'mirror' as const,
         badge: 'mirror',
         title: r.type,
+        workspaceId: r.workspaceId,
         body: JSON.stringify(
           {
             seq: r.seq,
@@ -270,10 +281,16 @@ export function App() {
         ...(hints.clientRole ? { clientRole: hints.clientRole } : {}),
       }
     })
-    return [...live, ...mirror].sort((a, b) =>
+    const target = workspaceIdForSyncQuery.trim()
+    const inScope = (row: Row) => {
+      if (!target) return true
+      if (!row.workspaceId) return true
+      return row.workspaceId === target
+    }
+    return [...live, ...mirror].filter(inScope).sort((a, b) =>
       a.at < b.at ? 1 : a.at > b.at ? -1 : 0,
     )
-  }, [activity, historyRows])
+  }, [activity, historyRows, workspaceIdForSyncQuery])
 
   const canSubmit = phase === 'ready' && intent.trim().length > 0
 
@@ -737,6 +754,11 @@ export function App() {
               (URL path key; not stored in mirror envelopes).
             </p>
           ) : null}
+          <p style={{ margin: 0, fontSize: '0.75rem', color: 'var(--muted)' }}>
+            <strong>Workspace scope</strong> matches History query below:{' '}
+            <code>{workspaceIdForSyncQuery.trim() || '(set query workspace)'}</code>.
+            Live lines without a workspace id stay visible; mirror rows must match.
+          </p>
           <div
             style={{
               flex: 1,
@@ -748,7 +770,9 @@ export function App() {
           >
             {workspaceStream.length === 0 ? (
               <span style={{ color: 'var(--muted)', fontSize: '0.9rem' }}>
-                Connect, then events and mirrored history appear here.
+                {activity.length > 0 || historyRows.length > 0
+                  ? 'No lines match the current workspace scope (see History query).'
+                  : 'Connect, then events and mirrored history appear here.'}
               </span>
             ) : (
               workspaceStream.map((row) => (
@@ -862,28 +886,76 @@ export function App() {
             History (read-only)
           </h2>
           <p style={{ margin: 0, fontSize: '0.8rem', color: 'var(--muted)' }}>
-            <code>GET /v1/events?workspaceId=…</code> — same{' '}
-            <strong>workspaceId</strong> filter as mirror writes (joined id wins,
-            else Session field). For catch-up after reconnect; not a device list.
+            <code>GET /v1/events?workspaceId=…</code> — read-only catch-up.{' '}
+            <strong>Default query</strong> follows the active session context (joined{' '}
+            <code>workspaceId</code> wins, else the Session form field). Optional
+            override audits another id without reconnecting; mirror{' '}
+            <code>POST</code> still uses the active context.
           </p>
-          <div style={{ fontSize: '0.8rem', color: 'var(--muted)' }}>
-            Query workspace:{' '}
-            <code>{effectiveWorkspaceForSync || '(set workspace id)'}</code>
-          </div>
-          <button
-            type="button"
-            onClick={() => void refreshHistory()}
-            disabled={historyLoading || !effectiveWorkspaceForSync}
+          <div
             style={{
-              alignSelf: 'flex-start',
-              padding: '0.45rem 0.9rem',
-              borderRadius: 6,
-              border: '1px solid var(--border)',
-              background: 'var(--surface)',
+              fontSize: '0.8rem',
+              color: 'var(--muted)',
+              display: 'flex',
+              flexDirection: 'column',
+              gap: '0.35rem',
             }}
           >
-            {historyLoading ? 'Loading…' : 'Refresh history'}
-          </button>
+            <div>
+              Active context:{' '}
+              <code>{effectiveWorkspaceForSync || '(none)'}</code>
+            </div>
+            <label
+              style={{ display: 'flex', flexDirection: 'column', gap: '0.25rem' }}
+            >
+              <span>Override query workspace (optional)</span>
+              <input
+                value={historyWorkspaceOverride}
+                onChange={(e) => setHistoryWorkspaceOverride(e.target.value)}
+                placeholder="Leave empty to use active context"
+                autoComplete="off"
+                spellCheck={false}
+                style={{
+                  padding: '0.45rem 0.55rem',
+                  borderRadius: 6,
+                  border: '1px solid var(--border)',
+                  background: 'var(--surface)',
+                }}
+              />
+            </label>
+            <div>
+              Effective query:{' '}
+              <code>{workspaceIdForSyncQuery.trim() || '(need workspace id)'}</code>
+            </div>
+          </div>
+          <div style={{ display: 'flex', flexWrap: 'wrap', gap: '0.5rem' }}>
+            <button
+              type="button"
+              onClick={() => void refreshHistory()}
+              disabled={historyLoading || !workspaceIdForSyncQuery.trim()}
+              style={{
+                padding: '0.45rem 0.9rem',
+                borderRadius: 6,
+                border: '1px solid var(--border)',
+                background: 'var(--surface)',
+              }}
+            >
+              {historyLoading ? 'Loading…' : 'Refresh history'}
+            </button>
+            <button
+              type="button"
+              onClick={() => setHistoryWorkspaceOverride('')}
+              disabled={!historyWorkspaceOverride.trim()}
+              style={{
+                padding: '0.45rem 0.9rem',
+                borderRadius: 6,
+                border: '1px solid var(--border)',
+                background: 'var(--surface)',
+              }}
+            >
+              Clear override
+            </button>
+          </div>
           {historyError ? (
             <div style={{ color: 'var(--danger)', fontSize: '0.85rem' }}>
               {historyError}
@@ -900,9 +972,9 @@ export function App() {
           >
             {historyRows.length === 0 ? (
               <span style={{ color: 'var(--muted)', fontSize: '0.9rem' }}>
-                {phase === 'ready' && effectiveWorkspaceForSync
-                  ? 'No mirrored rows yet (Host may be the only writer).'
-                  : 'Connect with a workspace id to load history.'}
+                {!workspaceIdForSyncQuery.trim()
+                  ? 'Set active context or an override workspace id, then refresh.'
+                  : 'No mirrored rows for this workspace query yet.'}
               </span>
             ) : (
               historyRows.map((r) => (

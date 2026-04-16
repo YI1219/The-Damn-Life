@@ -37,7 +37,7 @@
 - **Checklist**
   - [x] **Done**：E2E 覆盖 `workspaceId` 贯穿（接入断言）
   - [x] **Done**：Remote UI 显示 active `workspaceId` 并在任务/活动中携带
-  - [ ] **In progress**：Remote UI 的 History / Activity 支持按 `workspaceId` 聚合/过滤（明确入口与默认策略）
+  - [x] **Done**：Remote UI 的 History / Workspace stream 支持按 `workspaceId` 聚合/过滤（默认 active context；History 可选 override 只读查询；stream 与 query 对齐，live 无 `workspaceId` 仍展示）
 
 ### M2.3 `sync-service` 联动（只读先行）
 
