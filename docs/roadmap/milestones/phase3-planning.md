@@ -28,9 +28,9 @@
 - **交付**：客户端与服务在短暂断链后能恢复；mirror 失败可补偿或显式提示缺口
 - **验证**：与 `pnpm sync:smoke` 同类脚本扩展（断链时长、重试、幂等）
 - **Checklist**
-  - [ ] **Todo**：Remote / Host 侧 mirror 队列或重试策略（仍 best-effort 可配置）
-  - [ ] **Todo**：Web console 对「未镜像」区间的可读提示（不冒充已持久化）
-  - [ ] **Todo**：CI 或脚本验收断链→恢复
+  - [x] **Done**（web-console）：mirror `POST` **有限重试** + Session「Sync mirror」区 **Mirror gap / last ok** 提示（仍 best-effort，非持久队列）
+  - [ ] **Todo**：Host 侧 mirror 与/或客户端 **持久队列**、可配置重试（与 Remote 对齐策略）
+  - [ ] **Todo**：CI 或脚本扩展验收断链→恢复（在 `sync:smoke` 一类上加长场景）
 
 ### M3.3 可观测性与故障手册
 

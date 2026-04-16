@@ -132,6 +132,7 @@ export function App() {
     tasks,
     activity,
     activeWorkspaceId,
+    mirrorTransportHealth,
     connect,
     disconnect,
     submitTask,
@@ -517,6 +518,38 @@ export function App() {
               />
               <span>Mirror inbound/outbound wire to sync-service</span>
             </label>
+            {syncMirrorEnabled ? (
+              <div
+                style={{
+                  fontSize: '0.78rem',
+                  lineHeight: 1.45,
+                  color: mirrorTransportHealth.lastError
+                    ? 'var(--danger)'
+                    : 'var(--muted)',
+                }}
+              >
+                {mirrorTransportHealth.lastError ? (
+                  <>
+                    <strong>Mirror gap:</strong>{' '}
+                    {mirrorTransportHealth.lastError}. Relay is unaffected;
+                    History may omit recent wire until POST succeeds (retries are
+                    automatic).
+                  </>
+                ) : mirrorTransportHealth.lastOkAt ? (
+                  <>
+                    Last mirror POST ok:{' '}
+                    <code style={{ fontSize: '0.72rem' }}>
+                      {mirrorTransportHealth.lastOkAt}
+                    </code>
+                  </>
+                ) : (
+                  <>
+                    No mirror POST yet — needs workspace id, sync URL, and mirrored
+                    traffic after connect.
+                  </>
+                )}
+              </div>
+            ) : null}
           </div>
           <div style={{ display: 'flex', gap: '0.5rem', flexWrap: 'wrap' }}>
             <button

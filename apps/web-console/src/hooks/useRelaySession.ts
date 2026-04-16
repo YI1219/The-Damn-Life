@@ -41,6 +41,12 @@ export type ActivityItem = {
   clientRole?: string
 }
 
+/** Last sync-service mirror POST outcome (best-effort path only). */
+export type MirrorTransportHealth = {
+  lastOkAt: string | null
+  lastError: string | null
+}
+
 function readPayload(raw: Record<string, unknown>): Record<string, unknown> {
   const p = raw.payload
   if (p && typeof p === 'object') return p as Record<string, unknown>
@@ -62,6 +68,8 @@ export function useRelaySession(syncMirror?: RelaySyncMirrorInput) {
   const [activeWorkspaceId, setActiveWorkspaceId] = useState<WorkspaceId | null>(
     null,
   )
+  const [mirrorTransportHealth, setMirrorTransportHealth] =
+    useState<MirrorTransportHealth>({ lastOkAt: null, lastError: null })
 
   const pushActivity = useCallback((item: Omit<ActivityItem, 'id' | 'at'>) => {
     const id = crypto.randomUUID()
@@ -87,9 +95,20 @@ export function useRelaySession(syncMirror?: RelaySyncMirrorInput) {
         base,
         { workspaceId: wid, sessionId, envelope },
         'web-console',
-      ).catch(() => {
-        /* best-effort; relay path does not depend on mirror */
-      })
+      )
+        .then(() => {
+          setMirrorTransportHealth({
+            lastOkAt: new Date().toISOString(),
+            lastError: null,
+          })
+        })
+        .catch((e: unknown) => {
+          const msg = e instanceof Error ? e.message : String(e)
+          setMirrorTransportHealth((prev) => ({
+            lastOkAt: prev.lastOkAt,
+            lastError: msg,
+          }))
+        })
     },
     [activeWorkspaceId],
   )
@@ -416,6 +435,7 @@ export function useRelaySession(syncMirror?: RelaySyncMirrorInput) {
   const disconnect = useCallback(() => {
     boundSessionRef.current = null
     setActiveWorkspaceId(null)
+    setMirrorTransportHealth({ lastOkAt: null, lastError: null })
     const w = wsRef.current
     wsRef.current = null
     if (w && w.readyState === WebSocket.OPEN) w.close()
@@ -528,6 +548,9 @@ export function useRelaySession(syncMirror?: RelaySyncMirrorInput) {
     tasks,
     activity,
     activeWorkspaceId,
+    mirrorTransportHealth: syncMirror?.enabled
+      ? mirrorTransportHealth
+      : { lastOkAt: null, lastError: null },
     connect,
     disconnect,
     submitTask,
