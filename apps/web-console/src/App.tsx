@@ -223,6 +223,48 @@ export function App() {
     [tasks],
   )
 
+  const workspaceStream = useMemo(() => {
+    type Row = {
+      key: string
+      at: string
+      lane: 'live' | 'mirror'
+      badge: string
+      title: string
+      body?: string
+      source?: string
+    }
+    const live: Row[] = activity.map((a) => ({
+      key: `live-${a.id}`,
+      at: a.at,
+      lane: 'live',
+      badge: a.kind,
+      title: a.summary,
+      body: a.payloadPreview,
+      source: 'web-console',
+    }))
+    const mirror: Row[] = historyRows.map((r) => ({
+      key: `mirror-${r.seq}-${r.receivedAt}`,
+      at: r.receivedAt,
+      lane: 'mirror',
+      badge: 'mirror',
+      title: r.type,
+      body: JSON.stringify(
+        {
+          seq: r.seq,
+          traceId: r.traceId,
+          sessionId: r.sessionId,
+          payload: (r.envelope as { payload?: unknown }).payload,
+        },
+        null,
+        0,
+      ).slice(0, 1800),
+      source: r.source,
+    }))
+    return [...live, ...mirror].sort((a, b) =>
+      a.at < b.at ? 1 : a.at > b.at ? -1 : 0,
+    )
+  }, [activity, historyRows])
+
   const canSubmit = phase === 'ready' && intent.trim().length > 0
 
   const composedWsUrl = useMemo(
@@ -614,10 +656,11 @@ export function App() {
             minWidth: 0,
           }}
         >
-          <h2 style={{ margin: 0, fontSize: '1rem' }}>Activity & audit</h2>
+          <h2 style={{ margin: 0, fontSize: '1rem' }}>Workspace stream</h2>
           <p style={{ margin: 0, fontSize: '0.8rem', color: 'var(--muted)' }}>
-            Append-only style log for permission and audit events plus task
-            lifecycle. Suitable for explaining who did what.
+            Merges <strong>live</strong> events from this console with{' '}
+            <strong>mirror</strong> rows from sync-service (multi-writer). Task /
+            audit first; not a device table.
           </p>
           <div
             style={{
@@ -628,14 +671,14 @@ export function App() {
               gap: '0.4rem',
             }}
           >
-            {activity.length === 0 ? (
+            {workspaceStream.length === 0 ? (
               <span style={{ color: 'var(--muted)', fontSize: '0.9rem' }}>
-                Events will appear here.
+                Connect, then events and mirrored history appear here.
               </span>
             ) : (
-              activity.map((a) => (
+              workspaceStream.map((row) => (
                 <div
-                  key={a.id}
+                  key={row.key}
                   style={{
                     padding: '0.5rem 0.6rem',
                     borderRadius: 6,
@@ -644,21 +687,37 @@ export function App() {
                     fontSize: '0.8rem',
                   }}
                 >
-                  <div style={{ color: 'var(--muted)' }}>{a.at}</div>
+                  <div style={{ color: 'var(--muted)' }}>{row.at}</div>
                   <div>
                     <span
                       style={{
                         fontSize: '0.7rem',
                         textTransform: 'uppercase',
-                        color: 'var(--accent)',
+                        color:
+                          row.lane === 'live' ? 'var(--accent)' : 'var(--ok)',
                         marginRight: '0.35rem',
                       }}
                     >
-                      {a.kind}
+                      {row.lane}
                     </span>
-                    {a.summary}
+                    <span
+                      style={{
+                        fontSize: '0.7rem',
+                        textTransform: 'uppercase',
+                        color: 'var(--muted)',
+                        marginRight: '0.35rem',
+                      }}
+                    >
+                      {row.badge}
+                    </span>
+                    <strong>{row.title}</strong>
+                    {row.source ? (
+                      <span style={{ color: 'var(--muted)', marginLeft: '0.35rem' }}>
+                        · {row.source}
+                      </span>
+                    ) : null}
                   </div>
-                  {a.payloadPreview ? (
+                  {row.body ? (
                     <pre
                       style={{
                         margin: '0.35rem 0 0',
@@ -668,7 +727,7 @@ export function App() {
                         fontSize: '0.75rem',
                       }}
                     >
-                      {a.payloadPreview}
+                      {row.body}
                     </pre>
                   ) : null}
                 </div>
