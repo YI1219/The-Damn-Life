@@ -4,7 +4,10 @@ version = "0.0.1"
 edition = "2021"
 
 [dependencies]
+directories = "5"
 tauri = { version = "2", features = [] }
+
+[build-dependencies]
 tauri-build = { version = "2", features = [] }
 
 [[bin]]

@@ -29,13 +29,11 @@
 - 不包含 REST/RPC 接口定义（见 `docs/api/`）
 - 不定义业务逻辑，仅定义传输格式与路由规则
 
-## 📁 建议结构
+## 文档索引
 
-```
-protocols/
-├── overview.md          # 协议总览
-├── events.md            # 事件类型定义
-├── message-format.md    # 消息格式规范
-├── bridge-ipc.md        # Bridge 层 IPC 协议
-└── serialization.md     # 序列化约定
-```
+| 文件 | 说明 |
+| ---- | ---- |
+| [`websocket-events.md`](./websocket-events.md) | WebSocket 应用信封与 MVP 事件表 |
+| [`versioning.md`](./versioning.md) | 契约版本与 Lead 冻结流程 |
+
+（`overview.md` / `bridge-ipc.md` 等可按需增补。）

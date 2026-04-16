@@ -21,6 +21,7 @@
 
 - 系统整体架构图与模块拓扑
 - 各层（UI / Runtime / Platform / Bridge）边界定义
+- 逻辑工作区与多宿主协作的产品与架构对齐（见 `logical-environment.md`）
 - 数据流与事件流描述
 - 架构决策记录（ADR）
 - 模块间依赖关系与通信协议选型
@@ -36,7 +37,8 @@
 
 ```
 architecture/
-├── README.md            # 本文档
-├── monorepo.md          # Monorepo 结构、workspace、工具链
-└── dependency-rules.md  # 模块间依赖规则与约束
+├── README.md                 # 本文档
+├── monorepo.md               # Monorepo 结构、workspace、工具链
+├── dependency-rules.md       # 模块间依赖规则与约束
+└── logical-environment.md    # 逻辑工作区、多宿主抽象呈现与协作定调
 ```

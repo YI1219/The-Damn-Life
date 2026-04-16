@@ -14,7 +14,8 @@
 - Skill 开发规范（`skill-spec/`）
 - 安全策略文档（`security/`）
 - 开发指南（`development/`）
-- Roadmap（`roadmap/`）
+- Roadmap（`roadmap/`，总览见 `roadmap/overview.md`）
+- 多 Agent 交接（`agent-handoff/`，Lead 指令与专项回执，见 `agent-handoff/README.md`）
 
 ## 🚧 Boundaries
 

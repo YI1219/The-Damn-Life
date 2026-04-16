@@ -1,4 +1,3 @@
-import { rmSync, existsSync } from 'node:fs'
 import { resolve } from 'node:path'
 import { execSync } from 'node:child_process'
 

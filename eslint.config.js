@@ -68,28 +68,10 @@ export default [
       // Hooks
       ...reactHooksPlugin.configs.recommended.rules,
 
-      // Import
+      // Import (order disabled: eslint-plugin-import@2 is not compatible with ESLint 10 SourceCode APIs)
       'import/first': 'error',
       'import/newline-after-import': 'error',
       'import/no-duplicates': 'error',
-      'import/order': [
-        'error',
-        {
-          groups: [
-            'builtin',
-            'external',
-            'internal',
-            ['parent', 'sibling', 'index'],
-            'object',
-            'type',
-          ],
-          'newlines-between': 'always',
-          alphabetize: {
-            order: 'asc',
-            caseInsensitive: true,
-          },
-        },
-      ],
 
       // General JS/TS
       'no-console': ['warn', { allow: ['warn', 'error'] }],
@@ -119,6 +101,14 @@ export default [
 
       // Accessibility
       'jsx-a11y/anchor-is-valid': 'off',
+    },
+  },
+
+  // Tooling scripts and dev-only shims may print status.
+  {
+    files: ['scripts/**/*.{js,ts}', 'apps/app-shell/src/bridge/host-audit.ts'],
+    rules: {
+      'no-console': 'off',
     },
   },
 

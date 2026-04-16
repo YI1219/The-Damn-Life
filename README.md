@@ -11,6 +11,7 @@ AI Native Personal System — 本地优先的 AI 助手运行平台。
 - **强隔离** — Skill、Runtime、宿主之间严格沙箱隔离
 - **事件驱动架构** — 模块间通过事件协议通信，松耦合
 - **模块化与可扩展性** — 每个模块职责单一，通过 Skill 生态无限扩展
+- **逻辑工作区与多宿主协作** — 多设备以任务与工作区等抽象形态统一管理，允许跨宿主分工；默认体验不以设备清单为中心（详见 [`docs/architecture/logical-environment.md`](docs/architecture/logical-environment.md)）
 
 ---
 

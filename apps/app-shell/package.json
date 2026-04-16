@@ -15,6 +15,7 @@
     "vite": "^6.0.0"
   },
   "dependencies": {
+    "@the-damn-life/event-contracts": "workspace:*",
     "@tauri-apps/api": "^2.0.0"
   }
 }

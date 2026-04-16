@@ -1,0 +1,78 @@
+:root {
+  color-scheme: light dark;
+  --bg: #0f1216;
+  --surface: #171b22;
+  --border: #2a3140;
+  --text: #e8ecf2;
+  --muted: #8b95a8;
+  --accent: #5b8cff;
+  --danger: #f07178;
+  --ok: #7fd99a;
+  font-family:
+    ui-sans-serif,
+    system-ui,
+    -apple-system,
+    'Segoe UI',
+    Roboto,
+    sans-serif;
+  line-height: 1.5;
+  font-size: 15px;
+}
+
+@media (prefers-color-scheme: light) {
+  :root {
+    --bg: #f4f6fa;
+    --surface: #ffffff;
+    --border: #d8dee9;
+    --text: #1a1f28;
+    --muted: #5c6575;
+    --accent: #3457d5;
+    --danger: #c0362c;
+    --ok: #1f7a4a;
+  }
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  background: var(--bg);
+  color: var(--text);
+}
+
+#root {
+  min-height: 100vh;
+}
+
+.console-main {
+  display: grid;
+  grid-template-columns:
+    minmax(240px, 300px) 1fr minmax(260px, 340px) minmax(260px, 320px);
+  gap: 1px;
+  background: var(--border);
+}
+
+@media (max-width: 1200px) {
+  .console-main {
+    grid-template-columns: 1fr 1fr;
+  }
+}
+
+@media (max-width: 960px) {
+  .console-main {
+    grid-template-columns: 1fr;
+  }
+}
+
+button,
+input,
+textarea {
+  font: inherit;
+  color: inherit;
+}
+
+button {
+  cursor: pointer;
+}

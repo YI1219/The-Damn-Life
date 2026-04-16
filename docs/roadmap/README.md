@@ -32,11 +32,17 @@
 - 不替代 Issue Tracker / Project Board
 - 不包含日常任务管理
 
+## 📌 当前文档
+
+- [`overview.md`](overview.md) — 产品方向与阶段占位（多宿主抽象呈现、随身入口、跨设备协作）
+- [`milestones/phase2-planning.md`](milestones/phase2-planning.md) — 阶段 2（扩展）里程碑占位（仅规划）
+- [`backlog.md`](backlog.md) — 技术债 & 待定项
+
 ## 📁 建议结构
 
 ```
 roadmap/
-├── overview.md          # 路线图总览
+├── overview.md          # 路线图总览（已有）
 ├── milestones/          # 里程碑详情
 │   ├── v0.1-mvp.md
 │   └── v0.2-expand.md
