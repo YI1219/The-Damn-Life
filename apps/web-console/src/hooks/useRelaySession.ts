@@ -1,6 +1,7 @@
 import { useCallback, useEffect, useRef, useState } from 'react'
 import type { SessionId, WorkspaceId } from '@the-damn-life/event-contracts'
 import { postSyncMirrorEvent } from '../sync/syncApi'
+import { extractHostIdFromCapabilities } from '../sync/streamIdentity'
 import { joinRemoteEnvelope, newTraceId, taskSubmitEnvelope } from '../wire/envelope'
 import { parseIncoming } from '../wire/parseIncoming'
 
@@ -36,15 +37,8 @@ export type ActivityItem = {
   summary: string
   payloadPreview?: string
   workspaceId?: string
-}
-
-function extractHostIdFromCapabilities(
-  capabilities: unknown,
-): string | undefined {
-  if (typeof capabilities !== 'string') return undefined
-  // app-shell sets `capabilities: hostId=<uuid>`
-  const m = capabilities.match(/\bhostId=([0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12})\b/i)
-  return m?.[1]
+  hostId?: string
+  clientRole?: string
 }
 
 function readPayload(raw: Record<string, unknown>): Record<string, unknown> {
@@ -148,6 +142,8 @@ export function useRelaySession(syncMirror?: RelaySyncMirrorInput) {
             ...(hostId ? { hostId } : {}),
           }),
           workspaceId: wsFromEnvelope,
+          ...(hostId ? { hostId } : {}),
+          ...(clientRole ? { clientRole } : {}),
         })
         return
       }

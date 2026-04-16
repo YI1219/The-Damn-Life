@@ -4,6 +4,7 @@ import {
   fetchSyncHistory,
   type StoredEventRow,
 } from './sync/syncApi'
+import { identityHintsFromEnvelope } from './sync/streamIdentity'
 import { buildRelayRemoteUrl, splitRelayRemoteUrl } from './wire/relayUrl'
 
 const STORAGE_BASE = 'tdl:relayWsBase'
@@ -232,6 +233,8 @@ export function App() {
       title: string
       body?: string
       source?: string
+      hostId?: string
+      clientRole?: string
     }
     const live: Row[] = activity.map((a) => ({
       key: `live-${a.id}`,
@@ -241,25 +244,32 @@ export function App() {
       title: a.summary,
       body: a.payloadPreview,
       source: 'web-console',
+      ...(a.hostId ? { hostId: a.hostId } : {}),
+      ...(a.clientRole ? { clientRole: a.clientRole } : {}),
     }))
-    const mirror: Row[] = historyRows.map((r) => ({
-      key: `mirror-${r.seq}-${r.receivedAt}`,
-      at: r.receivedAt,
-      lane: 'mirror',
-      badge: 'mirror',
-      title: r.type,
-      body: JSON.stringify(
-        {
-          seq: r.seq,
-          traceId: r.traceId,
-          sessionId: r.sessionId,
-          payload: (r.envelope as { payload?: unknown }).payload,
-        },
-        null,
-        0,
-      ).slice(0, 1800),
-      source: r.source,
-    }))
+    const mirror: Row[] = historyRows.map((r) => {
+      const hints = identityHintsFromEnvelope(r.envelope)
+      return {
+        key: `mirror-${r.seq}-${r.receivedAt}`,
+        at: r.receivedAt,
+        lane: 'mirror' as const,
+        badge: 'mirror',
+        title: r.type,
+        body: JSON.stringify(
+          {
+            seq: r.seq,
+            traceId: r.traceId,
+            sessionId: r.sessionId,
+            payload: (r.envelope as { payload?: unknown }).payload,
+          },
+          null,
+          0,
+        ).slice(0, 1800),
+        source: r.source,
+        ...(hints.hostId ? { hostId: hints.hostId } : {}),
+        ...(hints.clientRole ? { clientRole: hints.clientRole } : {}),
+      }
+    })
     return [...live, ...mirror].sort((a, b) =>
       a.at < b.at ? 1 : a.at > b.at ? -1 : 0,
     )
@@ -662,6 +672,12 @@ export function App() {
             <strong>mirror</strong> rows from sync-service (multi-writer). Task /
             audit first; not a device table.
           </p>
+          {roleKey.trim() ? (
+            <p style={{ margin: 0, fontSize: '0.75rem', color: 'var(--muted)' }}>
+              Relay <strong>pair</strong> for this tab: <code>{roleKey.trim()}</code>{' '}
+              (URL path key; not stored in mirror envelopes).
+            </p>
+          ) : null}
           <div
             style={{
               flex: 1,
@@ -717,6 +733,28 @@ export function App() {
                       </span>
                     ) : null}
                   </div>
+                  {row.hostId || row.clientRole ? (
+                    <div
+                      style={{
+                        marginTop: '0.2rem',
+                        fontSize: '0.72rem',
+                        color: 'var(--muted)',
+                        lineHeight: 1.35,
+                      }}
+                    >
+                      {row.hostId ? (
+                        <>
+                          host <code>{row.hostId}</code>
+                        </>
+                      ) : null}
+                      {row.clientRole ? (
+                        <>
+                          {row.hostId ? ' · ' : null}
+                          peer <code>{row.clientRole}</code>
+                        </>
+                      ) : null}
+                    </div>
+                  ) : null}
                   {row.body ? (
                     <pre
                       style={{

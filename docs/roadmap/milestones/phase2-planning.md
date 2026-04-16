@@ -58,7 +58,7 @@
 
 - **Checklist**
   - [x] **Done**：工作区时间线（`web-console` **Workspace stream**：合并 live + sync mirror，按时间排序）
-  - [ ] **In progress**：同一工作区下多宿主来源可辨识（继续强化：从 mirror payload 提取 hostId / 展示 roleKey 上下文）
+  - [x] **Done**：同一工作区下多宿主来源可辨识（Workspace stream：`host` / `peer` 自 envelope payload；本 tab的 relay **pair**（URL `roleKey`）在栏头说明，因 relay 不写入载荷）
   - [ ] **Todo**：最小“协作叙事”页面信息架构（不影响现有 task-first 主流程）
 
 ## 风险与门控
