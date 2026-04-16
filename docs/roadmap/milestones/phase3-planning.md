@@ -30,7 +30,7 @@
 - **Checklist**
   - [x] **Done**（web-console）：mirror `POST` **有限重试** + Session「Sync mirror」区 **Mirror gap / last ok** 提示（仍 best-effort，非持久队列）
   - [ ] **Todo**：Host 侧 mirror 与/或客户端 **持久队列**、可配置重试（与 Remote 对齐策略）
-  - [ ] **Todo**：CI 或脚本扩展验收断链→恢复（在 `sync:smoke` 一类上加长场景）
+  - [x] **Done**：`pnpm sync:smoke` 扩展：**离线 POST 失败后** 再 **成功 POST**，并以 **`sinceSeq` 增量 GET** 校验 catch-up（`scripts/sync-history-smoke.ts`）
 
 ### M3.3 可观测性与故障手册
 
