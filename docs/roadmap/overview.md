@@ -26,6 +26,8 @@
 
 ## 相关文档
 
+- [`docs/development/agent-playbook.md`](../development/agent-playbook.md) — 多 Agent 协作、TaskPacket、分支交付入口（当前阶段不要求 PR）
+- [`docs/roadmap/release-targets.md`](release-targets.md) — R1 / R2 / R3 发布层级（与 TaskPacket `r_tier` 对齐）
 - [`docs/architecture/logical-environment.md`](../architecture/logical-environment.md) — 多环境与协作的架构对齐
 - [`docs/architecture/monorepo.md`](../architecture/monorepo.md) — 仓库分层与构建
 - [`docs/protocols/README.md`](../protocols/README.md) — 事件与协议入口

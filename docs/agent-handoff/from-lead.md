@@ -1,5 +1,7 @@
 # Lead → 各 Agent 指令（最新）
 
+> **多 Agent 协作、角色路由与 TaskPacket 真值**：以 [`docs/development/agent-playbook.md`](../development/agent-playbook.md) 为准；本文件保留 **阶段门控、CI 与 E2E 联调步骤** 等操作真值。
+
 > **Last updated**: 2026-04-15（阶段 1 已签-off；**阶段 2 开发已开启**）  
 > **变更摘要**：阶段 1（早期 MVP）验收完成：`pnpm e2e` ✅；真实 `web-console` UI 冒烟 ✅；Tauri Host WebView 实机 ✅（见 `replies/host.md` 2026-04-15T20:05Z）。阶段 2 当前聚焦：**M2.3 sync-service（只读镜像/查询）MVP 已落地** + 继续完善 **workspace /多对 relay分桶（`role:<key>`）** 的联调体验；契约仍冻结在 `0.1.0`（镜像 API 不走 `event-contracts`）。
 
