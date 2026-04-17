@@ -1,0 +1,12 @@
+{
+  "name": "@the-damn-life/scripts",
+  "version": "0.0.1",
+  "private": true,
+  "type": "module",
+  "devDependencies": {
+    "@the-damn-life/config": "workspace:*",
+    "@types/node": "^25.5.0",
+    "tsx": "^4.0.0",
+    "typescript": "^5.8.0"
+  }
+}

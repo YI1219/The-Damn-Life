@@ -1,0 +1,7 @@
+{
+  "extends": "@the-damn-life/config/tsconfig.react.json",
+  "compilerOptions": {
+    "outDir": "dist"
+  },
+  "include": ["src", "platform/web"]
+}

@@ -5,3 +5,31 @@ dist
 *.sqlite
 .DS_Store
 mobile/.vite
+build
+coverage
+.turbo
+.env
+.env.*
+!.env.example
+
+# Python
+__pycache__/
+*.pyc
+.venv/
+.pytest_cache/
+
+# Rust / Tauri
+target/
+src-tauri/target/
+
+# Go
+bin/
+*.test
+
+# TypeScript
+*.tsbuildinfo
+
+# IDE
+.vscode/
+.idea/
+*.sw?

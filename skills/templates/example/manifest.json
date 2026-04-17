@@ -1,0 +1,25 @@
+{
+  "name": "text-reverser",
+  "version": "0.1.0",
+  "description": "模板使用示例 — 反转输入文本",
+  "author": "The Damn Life",
+  "entry": "main.py",
+  "permissions": [],
+  "inputs": {
+    "text": {
+      "type": "string",
+      "required": true,
+      "description": "要反转的文本"
+    }
+  },
+  "outputs": {
+    "reversed": {
+      "type": "string",
+      "description": "反转后的文本"
+    },
+    "length": {
+      "type": "integer",
+      "description": "文本长度"
+    }
+  }
+}

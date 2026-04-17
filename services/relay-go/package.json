@@ -1,0 +1,10 @@
+{
+  "name": "@the-damn-life/relay-go",
+  "version": "0.1.0",
+  "private": true,
+  "scripts": {
+    "build": "mkdir -p dist && go build -o dist/relay ./cmd/relay",
+    "test": "go test ./...",
+    "typecheck": "go vet ./..."
+  }
+}

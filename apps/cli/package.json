@@ -1,0 +1,17 @@
+{
+  "name": "@the-damn-life/cli",
+  "version": "0.0.1",
+  "private": true,
+  "type": "module",
+  "bin": {
+    "damn": "dist/main.js"
+  },
+  "scripts": {
+    "dev": "tsx src/main.ts",
+    "build": "tsc",
+    "typecheck": "tsc --noEmit"
+  },
+  "devDependencies": {
+    "@the-damn-life/config": "workspace:*"
+  }
+}

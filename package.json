@@ -1,28 +1,63 @@
 {
   "name": "the-damn-life",
-  "version": "0.5.0",
   "private": true,
   "type": "module",
-  "workspaces": [
-    "host",
-    "mobile",
-    "shared",
-    "tools/improver"
+  "version": "0.5.0",
+  "description": "An AI agent runtime platform for automating workflows across desktop, CLI, and web environments.",
+  "keywords": [
+    "ai",
+    "agent",
+    "automation",
+    "workflow",
+    "model-on-chip",
+    "runtime",
+    "llm",
+    "cli",
+    "tauri",
+    "multi-platform"
   ],
+  "author": {
+    "name": "YI1219",
+    "url": "https://github.com/YI1219"
+  },
+  "contributors": [
+    {
+      "name": "Jackie Wong",
+      "url": "https://github.com/bigJackie"
+    }
+  ],
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/YI1219/The-Damn-Life"
+  },
+  "packageManager": "pnpm@10.28.2",
   "scripts": {
-    "dev": "concurrently \"npm:dev:host\" \"npm:dev:mobile\"",
-    "dev:host": "npm --workspace host run dev",
-    "dev:mobile": "npm --workspace mobile run dev",
-    "build": "npm run build -w shared && npm run build -w host && npm run build -w mobile",
-    "check:gate-lite": "npm run build && npm --workspace host run gate:lite",
-    "check:gate": "npm run build && npm --workspace host run gate",
-    "check:gate:mobile": "npm run build -w mobile && npm --workspace host run gate:mobile",
-    "improver": "npm --workspace @damn-life/improver run start",
-    "smoke:e2e": "npm --workspace host run smoke:e2e",
-    "smoke:e2e-success": "npm --workspace host run smoke:e2e-success",
-    "smoke:strict": "npm --workspace host run smoke:strict"
+    "dev": "tsx scripts/dev.ts",
+    "dev:all": "pnpm exec turbo run dev --parallel",
+    "build": "turbo run build",
+    "lint": "eslint .",
+    "test": "turbo run test",
+    "typecheck": "turbo run typecheck",
+    "format": "prettier --write .",
+    "clean": "tsx scripts/clean.ts",
+    "bootstrap": "tsx scripts/bootstrap.ts",
+    "e2e": "tsx scripts/e2e-smoke.ts",
+    "sync:smoke": "tsx scripts/sync-history-smoke.ts"
   },
   "devDependencies": {
-    "concurrently": "^9.1.2"
+    "@eslint/js": "^10.0.1",
+    "eslint": "^10.1.0",
+    "eslint-config-prettier": "^10.1.8",
+    "eslint-plugin-import": "^2.32.0",
+    "eslint-plugin-jsx-a11y": "^6.10.2",
+    "eslint-plugin-react": "^7.37.5",
+    "eslint-plugin-react-hooks": "^7.0.1",
+    "globals": "^17.4.0",
+    "prettier": "^3.8.1",
+    "rimraf": "^6.1.3",
+    "tsx": "^4.21.0",
+    "turbo": "^2.9.3",
+    "typescript": "^6.0.2",
+    "typescript-eslint": "^8.58.0"
   }
 }

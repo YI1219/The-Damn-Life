@@ -1,0 +1,8 @@
+{
+  "name": "@the-damn-life/runtime-py",
+  "version": "0.0.1",
+  "private": true,
+  "scripts": {
+    "test": "python3 -m pytest -q"
+  }
+}

@@ -1,0 +1,15 @@
+{
+  "name": "@the-damn-life/constants",
+  "version": "0.0.1",
+  "private": true,
+  "type": "module",
+  "main": "src/index.ts",
+  "types": "src/index.ts",
+  "scripts": {
+    "build": "tsc -b",
+    "typecheck": "tsc --noEmit"
+  },
+  "devDependencies": {
+    "@the-damn-life/config": "workspace:*"
+  }
+}

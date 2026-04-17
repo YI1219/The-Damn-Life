@@ -1,0 +1,114 @@
+:root {
+  color-scheme: light dark;
+  --bg: #0f1216;
+  --surface: #171b22;
+  --border: #2a3140;
+  --text: #e8ecf2;
+  --muted: #8b95a8;
+  --accent: #5b8cff;
+  --danger: #f07178;
+  --ok: #7fd99a;
+  font-family:
+    ui-sans-serif,
+    system-ui,
+    -apple-system,
+    'Segoe UI',
+    Roboto,
+    sans-serif;
+  line-height: 1.5;
+  font-size: 15px;
+}
+
+@media (prefers-color-scheme: light) {
+  :root {
+    --bg: #f4f6fa;
+    --surface: #ffffff;
+    --border: #d8dee9;
+    --text: #1a1f28;
+    --muted: #5c6575;
+    --accent: #3457d5;
+    --danger: #c0362c;
+    --ok: #1f7a4a;
+  }
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  background: var(--bg);
+  color: var(--text);
+}
+
+#root {
+  min-height: 100vh;
+}
+
+.console-ia-rail {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: 0.35rem 1rem;
+  padding: 0.45rem 1.25rem;
+  background: var(--surface);
+  border-bottom: 1px solid var(--border);
+  font-size: 0.8rem;
+  color: var(--muted);
+}
+
+.console-ia-rail strong {
+  color: var(--text);
+  font-weight: 600;
+}
+
+.console-ia-rail nav {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.35rem 0.85rem;
+}
+
+.console-ia-rail a {
+  color: var(--accent);
+  text-decoration: none;
+}
+
+.console-ia-rail a:hover {
+  text-decoration: underline;
+}
+
+.console-main section {
+  scroll-margin-top: 0.5rem;
+}
+
+.console-main {
+  display: grid;
+  grid-template-columns:
+    minmax(240px, 300px) 1fr minmax(260px, 340px) minmax(260px, 320px);
+  gap: 1px;
+  background: var(--border);
+}
+
+@media (max-width: 1200px) {
+  .console-main {
+    grid-template-columns: 1fr 1fr;
+  }
+}
+
+@media (max-width: 960px) {
+  .console-main {
+    grid-template-columns: 1fr;
+  }
+}
+
+button,
+input,
+textarea {
+  font: inherit;
+  color: inherit;
+}
+
+button {
+  cursor: pointer;
+}
