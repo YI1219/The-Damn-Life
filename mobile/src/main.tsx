@@ -1,4 +1,4 @@
-import React, { useEffect, useMemo, useState } from "react";
+import React, { useMemo, useState } from "react";
 import { createRoot } from "react-dom/client";
 import { wireHostWebSocket, type PendingPlan } from "./wsMessageHandler";
 
@@ -87,12 +87,6 @@ function App() {
   const [isQuickConnecting, setIsQuickConnecting] = useState(false);
   const [showPreviewDetail, setShowPreviewDetail] = useState(false);
 
-  useEffect(() => {
-    if (!pendingPlan) {
-      setShowPreviewDetail(false);
-    }
-  }, [pendingPlan]);
-
   const wsUrl = useMemo(() => {
     try {
       const u = new URL(hostOrigin);
@@ -131,7 +125,10 @@ function App() {
       setSessionToken,
       setTaskId,
       setLastFailedTaskId,
-      setPendingPlan
+      setPendingPlan: (plan: PendingPlan | null) => {
+        setPendingPlan(plan);
+        if (!plan) setShowPreviewDetail(false);
+      }
     };
     wireHostWebSocket(ws, ctx);
     ws.onopen = () => {
@@ -184,7 +181,10 @@ function App() {
           setSessionToken,
           setTaskId,
           setLastFailedTaskId,
-          setPendingPlan
+          setPendingPlan: (plan: PendingPlan | null) => {
+            setPendingPlan(plan);
+            if (!plan) setShowPreviewDetail(false);
+          }
         });
         resolve(true);
       };

@@ -127,7 +127,7 @@ export function useRelaySession({ confirm }: UseRelaySessionOptions) {
   const [logs, setLogs] = useState<string[]>([])
   const [syncHealth, setSyncHealth] = useState<SyncHealth>({ lastOkAt: null, lastError: null })
   const sessionRef = useRef<RelayHostSession | null>(null)
-  const hostId = useRef(getOrCreateHostId()).current
+  const [hostId] = useState(() => getOrCreateHostId())
 
   const log = useCallback((line: string) => {
     setLogs((prev) => [...prev, line])

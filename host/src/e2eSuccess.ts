@@ -37,7 +37,7 @@ async function run(): Promise<void> {
   const waiters: Array<(msg: any) => void> = [];
 
   ws.onmessage = async (evt: MessageEvent) => {
-    let raw = "";
+    let raw: string;
     if (typeof evt.data === "string") raw = evt.data;
     else if (evt.data instanceof Blob) raw = await evt.data.text();
     else raw = String(evt.data);
@@ -82,7 +82,7 @@ async function run(): Promise<void> {
   }
 
   await mkdir(dirname(reportPath), { recursive: true });
-  let report: Record<string, unknown> = {};
+  let report: Record<string, unknown>;
   try {
     report = JSON.parse(await readFile(reportPath, "utf8"));
   } catch {

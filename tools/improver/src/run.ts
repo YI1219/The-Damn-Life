@@ -89,12 +89,10 @@ async function main(): Promise<void> {
   const client = new ModelClient();
   const outerRepo = getRepoRoot(process.cwd());
   let workRoot = outerRepo;
-  let branch = "(current checkout)";
   if (!noWorktree) {
     const wt = createWorktree(outerRepo);
     workRoot = wt.path;
-    branch = wt.branch;
-    console.log(`Worktree: ${workRoot}\nBranch: ${branch}\n`);
+    console.log(`Worktree: ${workRoot}\nBranch: ${wt.branch}\n`);
   }
 
   const context = retrieveWithRg(workRoot, goal);

@@ -46,11 +46,6 @@ export function HostPanel({ confirm }: HostPanelProps): ReactNode {
 
   // relay URL: derived from roleKey but user-editable (roleKey change overwrites it)
   const [relayUrl, setRelayUrl] = useState(() => buildRelayHostWsUrl({ roleKey }))
-  const prevRoleKey = useRef(roleKey)
-  if (prevRoleKey.current !== roleKey) {
-    prevRoleKey.current = roleKey
-    setRelayUrl(buildRelayHostWsUrl({ roleKey }))
-  }
 
   const { connected, logs, syncHealth, hostId, connect, disconnect } = useRelaySession({ confirm })
 
@@ -98,7 +93,11 @@ export function HostPanel({ confirm }: HostPanelProps): ReactNode {
           autoComplete="off"
           placeholder="(empty = default)"
           value={roleKey}
-          onChange={(e) => setRoleKey(e.target.value)}
+          onChange={(e) => {
+            const next = e.target.value
+            setRoleKey(next)
+            setRelayUrl(buildRelayHostWsUrl({ roleKey: next }))
+          }}
         />
       </label>
 
